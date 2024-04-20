@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Aluga Fácil</title>
+ 
+</head>
+<style>
+    body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0f0c25;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: #0fc7c8;
+}
+#login {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.name input {
+    border-radius: 15px;
+    border: none;
+    width: 250px;
+    height: 40px;
+    padding-left: 15px;
+    background-color: #1e1c2e;
+    color: #b6b6b6;
+    margin-bottom: 15px;
+}
+
+.email input {
+    border-radius: 15px;
+    border: none;
+    width: 250px;
+    height: 40px;
+    padding-left: 15px;
+    background-color: #1e1c2e;
+    color: #b6b6b6;
+}
+
+.senha input {
+    border-radius: 15px;
+    border: none;
+    width: 250px;
+    height: 40px;
+    padding-left: 15px;
+    background-color: #1e1c2e;
+    color: #b6b6b6;
+    margin-top: 15px;
+}
+
+.entrar input {
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: #f5f0f0;
+    color: #141414;
+}
+
+input::placeholder {
+    color: #b6b6b6;
+}
+
+h1 {
+    color: #FAFAFA;
+}
+
+.caixa {
+    margin-top: 65px;
+}
+
+.caixa img {
+    width: 115px;
+}
+
+input:focus {
+    outline: none;
+}
+
+#listServices {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background-color: #faf8f8;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: auto;
+      width: 700px;
+      margin-top: 150px;
+    }
+
+    h2 {
+      color: #0f0c25;
+    }
+
+</style>
+
+<body id="principal">
+    <div id = "conteudo">
+        <form name = "form1">
+
+                <div id="login">
+
+                    <div class="caixa">
+                        <img src="img/logo_alugafacil.png" alt="">
+                        <h1>LOGIN</h1>
+
+                        <div class="email">
+                            <input type="email" name = "txtLogin" placeholder="E-mail">
+                        </div>
+
+                        <div class="senha">
+                            <input type="password" name = "txtSenha" placeholder="Senha">
+                        </div>
+
+                        <div class="entrar">
+                            <p>Ainda não tem uma conta? <a href="cadastro.html">Crie uma.</a></p>
+                            <button onclick = "buscar(event, this)">
+                                <input type="submit" value="Entrar">
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+                
+            <div id = "mensagem"></div>
+        </form>
+    </div>
+
+    <div id = "listServices" style = "display: none;">
+        <h2 style="text-align: center;">Lista de acesso Aluga Fácil:</h2>
+        <button onclick="window.location.href ='inicio.html';" style="border: none; padding: 10px 20px; border-radius: 25px; background-color: #0fc7c8; color: #ffffff; font-size: 16px; cursor: pointer; margin: 5px;">Acessar a tela inicial do site</button>
+        <br><br>                                 
+        <button onclick="window.location.href ='consulta_cadastroAll.html';" class="esconder" style="border: none; padding: 10px 20px; border-radius: 25px; background-color: #0fc7c8; color: #ffffff; font-size: 16px; cursor: pointer; margin: 5px;">Consultar Todos Registros Cadastrado</button>        
+    </div>
+    <!-- Programação em javaScript -->
+    <script type = "text/javascript">
+        var perfil=""; //inicializar com valor = " "
+        //Um subprograma para buscar login e senha no BD 
+        function buscar(event, form){
+            //Este comando é para prevenir o cancelamento de evanto
+            event.preventDefault();
+            //variáveis para obter os dados digitados
+            const login  = document.form1.txtLogin.value;
+            const senha  = document.form1.txtSenha.value;
+              
+            //uma lista para armazenar conjunto de dados obtidos
+            const dados = { 
+                login: login,
+                senha: senha
+            };
+            //uma lista para dados de configuração
+            const options = {
+                method: 'POST', //método 'post': para enviar os dados
+                headers: {
+                'Content-Type': 'application/json',            
+                },
+                body: JSON.stringify(dados),
+            };
+    
+            if (login != "" && senha != "") { //se os valores não são vazios 
+                    // caminho de acesso ao login da sua maquinha          
+                     const URL = 'http://localhost/Api_Aluga_Facil/Login/api/Login';                      
+                     fetch(URL , options)//comunicar e buscar informação no BD
+                        .then(resp => resp.json())                                    
+                        .then(data => mostrarResposta(data))
+                        .catch(erro => console.log(erro));            
+            }
+        }
+        //Uma função (subprograma) para avalidar login & senha e mostrar os resultados
+        function mostrarResposta(data){
+            console.log(data) ;       
+            if(data.status == "error"){ // se não encontrou o login
+                document.getElementById("mensagem").textContent =  data.information ;     
+            } else {
+                perfil = data.information.perfil ; // pega o perfil que retornou do Banco de Dados
+                //Esconde a área com o formulário de login 
+                document.getElementById("conteudo").style.display = 'none' ; 
+                //Mostra a área com os botões: lista de acesso ao Api
+                document.getElementById("listServices").style.display = 'block' ;
+                // console.log(data.dados);
+                //O método .includes é para verificar se contem a palavra 'adm'
+                if (perfil.toLowerCase().includes("adm")){ 
+                    //seleciona todos os botões escondidos
+                    var elementos = document.querySelectorAll('.esconder'); 
+                    //loop para mostrar todos os botões para perfil do tipo "adm"
+                    elementos.forEach( function(item){ 
+                        item.classList.remove('esconder'); //remove a classe 'esconder' 
+                        item.classList.add('mostrar'); //adiciona a classe 'mostrar' 
+                    });
+                    // console.log(elementos);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

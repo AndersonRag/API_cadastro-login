@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">    
+    <title>ConsultaAll</title>
+    <!-- Estilo para nossa tabela --> 
+    <style>
+        * {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+.table-wrap {
+  max-width: 800px;
+  margin: 80px auto;
+  overflow-x: auto;
+}
+
+table, td, th {
+  text-align: center;
+  font-size:18px;
+  text-transform:capitalize;
+}
+
+table thead tr{
+    background-color: #0f0c25;
+    color: #fff;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 16px 16px 0px 0px;
+  overflow: hidden;
+}
+
+table tbody tr td{
+ border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 15px;
+  white-space: nowrap;
+}
+
+table tbody tr:nth-child(odd) {
+ background: #b4b4b442;
+  color: #000;
+  font-weight: 500;
+}
+
+.box-wrap {
+  padding: 0px 16px;
+}
+
+table tbody tr td::last-child{
+background-color:red;
+}
+
+
+h1 {
+    text-decoration: none;
+    color: #0f0c25;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Criamos um conteiner (painel) para colocar uma tabela -->
+    <div class="box-wrap">
+        <div class="table-wrap">
+    <div id = "tabela_cadastro"><h1>Os registros dos clientes</h1></div>
+    
+    
+    
+    
+    
+    <!--Iniciamos a programação JavaScript-->
+    <script type = "text/JavaScript">
+        //Endereço do api que construimos
+        const URL = 'http://localhost/Api_Aluga_Facil/Cadastro/api/Cadastro';
+        fetch( URL, {method: 'GET'})
+            .then(resp => resp.json())
+            .then(data => mostrarResposta(data))
+            .catch(erro => console.log(erro));
+        
+        //Criamos a função mostrarResposta(data)
+        function mostrarResposta(data) {
+            console.log(data);
+            if (data.status != "sucess")
+               alert("Sem registro de clientes!!!");
+            else
+               criarTabela(data.information);
+        }        
+       
+        //criamos a função criaTabela()
+        function criarTabela(conteudo) {
+            //Os elementos da tabela
+            var tabela = document.createElement("table");
+            var cabecalho = document.createElement("thead");
+            var corpo = document.createElement("tbody");
+
+            /*Monstar cabeçalho da tabela */
+            //criamos uma linha:
+            var tr = document.createElement("tr");
+            //criamos 4 colunas 
+            var thid_cadastro = document.createElement("th");
+            var thnome = document.createElement("th");
+            var thsobrenome = document.createElement("th");
+            var thidade = document.createElement("th");
+            var themail = document.createElement("th");
+            var thsenha = document.createElement("th");
+
+            //Adicionar os campos da coluna na linha do cabeçalho
+            thid_cadastro.appendChild(document.createTextNode("Cadastro"));
+            tr.appendChild(thid_cadastro);
+
+            thnome.appendChild(document.createTextNode("Nome"));
+            tr.appendChild(thnome);
+
+            thsobrenome.appendChild(document.createTextNode("Sobrenome"));
+            tr.appendChild(thsobrenome);
+
+            thidade.appendChild(document.createTextNode("Idade"));
+            tr.appendChild(thidade);
+
+            themail.appendChild(document.createTextNode("Email"));
+            tr.appendChild(themail);
+
+            thsenha.appendChild(document.createTextNode("Senha"));
+            tr.appendChild(thsenha);
+
+            //Adicionar a linha no cabeçalho
+            cabecalho.appendChild(tr);
+
+            //Adicionar o cabeçalho na tabela
+            tabela.appendChild(cabecalho);
+
+            /* Conteudo da tabela: usando .forEach(...) */
+            conteudo.forEach(item =>{
+                var tr = document.createElement("tr");
+                //Registro Cadastro:
+                var tdid_cadastro = document.createElement("td");
+                var textoid_cadastro = document.createTextNode(item.id_cadastro);
+                tdid_cadastro.appendChild(textoid_cadastro);
+                tr.appendChild(tdid_cadastro);
+            
+                //Registro Nome:
+                var tdnome = document.createElement("td");
+                var textonome = document.createTextNode(item.nome);
+                tdnome.appendChild(textonome);
+                tr.appendChild(tdnome);
+
+                //Registro Sobrenome:
+                var tdsobrenome = document.createElement("td");
+                var textosobrenome = document.createTextNode(item.sobrenome);
+                tdsobrenome.appendChild(textosobrenome);
+                tr.appendChild(tdsobrenome);
+
+                //Registro Idade:
+                var tdidade = document.createElement("td");
+                var textoidade = document.createTextNode(item.idade);
+                tdidade.appendChild(textoidade);
+                tr.appendChild(tdidade);
+
+                //Registro Email:
+                var tdemail = document.createElement("td");
+                var textoemail = document.createTextNode(item.email);
+                tdemail.appendChild(textoemail);
+                tr.appendChild(tdemail);
+
+                //Registro Senha:
+                var tdsenha = document.createElement("td");
+                var textosenha = document.createTextNode(item.senha);
+                tdsenha.appendChild(textosenha);
+                tr.appendChild(tdsenha);
+
+                //Anexar os campos no corpo da tabela
+                corpo.appendChild(tr);
+
+            });
+
+            //Adicionar corpo na tabela
+            tabela.appendChild(corpo);
+            
+            //Adicional a tabela no conteiner (painel) div
+            document.getElementById("tabela_cadastro").appendChild(tabela);            
+        } 
+
+    </script>    
+</body>
+</html>

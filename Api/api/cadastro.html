@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Aluga Fácil</title>
+</head>
+<style>
+    body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0f0c25;
+    color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: #0fc7c8;
+}
+
+#login {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.name input {
+    border-radius: 15px;
+    border: none;
+    width: 250px;
+    height: 40px;
+    padding-left: 15px;
+    background-color: #1e1c2e;
+    color: #b6b6b6;
+    margin-bottom: 15px;
+}
+
+.email input {
+    border-radius: 15px;
+    border: none;
+    width: 250px;
+    height: 40px;
+    padding-left: 15px;
+    background-color: #1e1c2e;
+    color: #b6b6b6;
+}
+
+.senha input {
+    border-radius: 15px;
+    border: none;
+    width: 250px;
+    height: 40px;
+    padding-left: 15px;
+    background-color: #1e1c2e;
+    color: #b6b6b6;
+    margin-top: 15px;
+}
+
+.entrar input {
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: #f5f0f0;
+    color: #141414;
+}
+
+input::placeholder {
+    color: #b6b6b6;
+}
+
+h1 {
+    color: #FAFAFA;
+}
+
+.caixa {
+    margin-top: 65px;
+}
+
+.caixa img {
+    width: 115px;
+}
+
+input:focus {
+    outline: none;
+}
+</style>
+<body>
+    <form name = "inserir_cadastro">
+        <div id="login">
+            <div class="caixa">
+                <img src="img/logo_alugafacil.png" alt="">
+                <h1>Crie a sua conta. É grátis!</h1>
+
+                <div class="name">
+                    <input type="text" name="txtnome" placeholder="Nome" required/>
+                </div>
+
+                <div class="name">
+                    <input type="text" name="txtsobrenome" placeholder="Sobrenome" required/>
+                </div>
+
+                <div class="name">
+                    <input type="date" name="numberidade" placeholder="Data" required/>
+                </div>
+
+                <div class="email">
+                    <input type="email" name="txtemail" placeholder="Email" required/>
+                </div>
+  
+                <div class="senha">
+                    <input type="password" name="passwordsenha" placeholder="Senha" required/>
+                </div>
+
+                <div class="entrar">
+                    <p>Já tem uma conta? <a href="login.html">Entre aqui.</a></p>
+                    <button> <input type="button" name = "btsalvar" value="Cadastrar" onclick = "salvar(event, this)"></button>
+                   
+                </div>
+                    <!--Criamos dois botões -->
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <script type = "text/javascript">
+        //Criamos uma função (subprograma) para eniviar os dados digitados ao BD (xampp-MySQL)
+        function salvar(event, form){
+            //Este comando (ou método) é para prevenir o cancelamento de evanto
+            event.preventDefault();
+            //variáveis para obter os dados digitados por usuario
+            const Nome = document.inserir_cadastro.txtnome.value;
+            const Sobrenome = document.inserir_cadastro.txtsobrenome.value;
+            const Idade = document.inserir_cadastro.numberidade.value;
+            const Email = document.inserir_cadastro.txtemail.value;
+            const Senha = document.inserir_cadastro.passwordsenha.value;    
+            //uma lista para armazenar conjunto de dados obtidos
+            const dados = { 
+                nome: Nome,
+                sobrenome: Sobrenome,
+                idade: Idade,  
+                email: Email, 
+                senha: Senha, 
+            };
+            //uma lista para dados de configuração
+            const options = {
+                method: 'POST', //método 'post': para enviar os dados
+                headers: {
+                'Content-Type': 'application/json',            
+                },
+                //O comando JSON.stringify(dados) converter formato JSON para formato texto
+                body: JSON.stringify(dados),
+            };
+            //verifcar o campo do Nome:
+            if ( Nome != "" ) {         
+                    //Endereço do api que construimos para cadastar os dados no BD
+                    const URL = 'http://localhost/Api_Aluga_Facil/Cadastro/api/Cadastro';
+                    fetch(URL , options) //operação para executar cadastro                      
+                        /*Uma Arrow function é exatamente como uma função/callback normal */ 
+                        .then(resp => resp.json())                                        
+                        .then(data => mostrarResposta(data))
+                        //Além disso podemos utilizar o método catch() para tratar erros.
+                        //e a mensagem de erros estará console
+                        .catch(erro => console.log(erro));            
+            }
+        }
+        //Uma função para mostar uma mensagem de alerta "Dados incluidos com sucesso"
+        function mostrarResposta(data,form){
+            //alert("Dados incluídos com sucesso");            
+            // tipo de dados internos */
+            console.log(data) ; 
+            if (data.status == "sucess"){
+                //limpar os dados nos campos do formulário
+            document.inserir_cadastro.txtnome.value = "";
+            document.inserir_cadastro.txtsobrenome.value = "";
+            document.inserir_cadastro.numberidade.value = "";
+            document.inserir_cadastro.txtemail.value = "";
+            document.inserir_cadastro.passwordsenha.value = "";
+                alert("Dados incluidos com sucesso!!!");
+            } else {
+                alert("Erro ao incluir!!!");
+            }                                  
+        }
+    </script>    
+</body>
+</html>
